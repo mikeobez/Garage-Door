@@ -2,7 +2,7 @@
 import RPi.GPIO as GPIO
 import time
 
-print "garagedoor class loaded successfully"
+print("garagedoor class imported successfully")
 
 class GarageDoor:
 	def __init__(self,passphrase_init):
@@ -22,10 +22,10 @@ class GarageDoor:
 		#check passphrase
 		if (passphrase_attempt == self.passphrase):
 			#alternate off/on in 1-sec intervals
-			print "Simulate Button Press"
+			print("Simulate Button Press")
 			GPIO.output(self.DoorActuateBCM,1)
 			time.sleep(1)
-			print "Release the Button"
+			print("Release the Button")
 			GPIO.output(self.DoorActuateBCM,0)
 
 	#TODO: Add a function to get the current state of the door

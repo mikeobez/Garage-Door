@@ -1,3 +1,3 @@
 #!/bin/sh
 
-python2 $ProjectPath/src/udpsocket.py
+python3 $ProjectPath/src/UDPClass.py
