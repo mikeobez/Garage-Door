@@ -1,46 +1,34 @@
 import socket
-import garagedoor
 
-#Gets the IP address of the host machine
-def get_my_IP_Address():
-	BROADCAST_IP = '10.255.255.255'
-	try:
-		host_ip = socket.gethostbyname(socket.gethostname())
-	except:
-		host_ip = '-1'
+global received_data
 
-	if host_ip.startswith("127.0"):
-		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-		s.connect((BROADCAST_IP, 1))
-		host_ip = s.getsockname()[0]
-	return host_ip
+class UDP:
+	def __init__(self):
+		self.received_data = ''
+		print("Init")
 
-UDP_IP = get_my_IP_Address()
-#check if the UDP_IP was fetched correctly. If not, exit gracefully.
-#if(UDP_IP == '-1'):
-#	print("Problem with fetching host IP address, exiting")
-#	return
+	def ReceiveThread(self,IP_Address_In,Port_Num_In):
+		print("IP=",IP_Address_In)
+		print("Port",Port_Num_In)
 
-UDP_Port = 2523
+		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		#Try-Catch here in case port is unailable. Avoid a crashing
+		try:
+			sock.bind((IP_Address_In, Port_Num_In))
+		except Exception as e:
+			print("Problem opening IP/Port combo")
+			print(repr(e))
 
-#Try-Catch here in case we are already running. Avoid a crashing
-try:
-	sock.bind((UDP_IP, UDP_Port))
-except Exception as e:
-	print("Problem opening IP/Port combo")
-	print(repr(e))
+		print("successfully opened port")
 
-gd = garagedoor.GarageDoor(b'Open Sesame')
+		while True:
+			try:
+				data, addr = sock.recvfrom(1024)
+				self.received_data = data
+				print("Success", data)
 
-while True: #TODO: There has to be a better way to do this
-	data, addr = sock.recvfrom(1024)
-	print(addr)
-	print(data)
-
-	gd.Actuate(data)
-
-
+			except socket.error:
+				pass
 
 
