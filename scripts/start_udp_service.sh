@@ -1,3 +1,3 @@
 #!/bin/sh
 
-python3 $ProjectPath/src/UDPClass.py
+python3 $ProjectPath/src/garagedoormain.py
